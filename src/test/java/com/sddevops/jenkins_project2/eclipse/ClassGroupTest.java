@@ -2,10 +2,12 @@ package com.sddevops.jenkins_project2.eclipse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.time.Month;
 
-public class ClassGroupTest {
+import org.junit.jupiter.api.Test;
+
+class ClassGroupTest {
 
     @Test
     void testConstructor() {
@@ -25,14 +27,14 @@ public class ClassGroupTest {
         Student student = new Student(
                 1,
                 "Alice",
-                java.time.LocalDate.of(2025, 1, 1));
+                LocalDate.of(2025, Month.JANUARY, 1));
 
         assertTrue(group.addStudent(student));
 
         assertEquals(1, group.getSize());
         assertSame(student, group.getStudents()[0]);
     }
-    
+
     @Test
     void testAddStudentWhenFull() {
 
@@ -41,12 +43,12 @@ public class ClassGroupTest {
         Student student1 = new Student(
                 1,
                 "Alice",
-                LocalDate.of(2025, 1, 1));
+                LocalDate.of(2025, Month.JANUARY, 1));
 
         Student student2 = new Student(
                 2,
                 "Bob",
-                LocalDate.of(2025, 1, 1));
+                LocalDate.of(2025, Month.FEBRUARY, 1));
 
         assertTrue(group.addStudent(student1));
         assertFalse(group.addStudent(student2));
@@ -54,7 +56,7 @@ public class ClassGroupTest {
         assertEquals(1, group.getSize());
         assertSame(student1, group.getStudents()[0]);
     }
-    
+
     @Test
     void testRemoveStudent() {
 
@@ -63,12 +65,12 @@ public class ClassGroupTest {
         Student student1 = new Student(
                 1,
                 "Alice",
-                LocalDate.of(2025, 1, 1));
+                LocalDate.of(2025, Month.JANUARY, 1));
 
         Student student2 = new Student(
                 2,
                 "Bob",
-                LocalDate.of(2025, 2, 1));
+                LocalDate.of(2025, Month.FEBRUARY, 1));
 
         group.addStudent(student1);
         group.addStudent(student2);
@@ -78,7 +80,7 @@ public class ClassGroupTest {
         assertEquals(1, group.getSize());
         assertSame(student2, group.getStudents()[0]);
     }
-    
+
     @Test
     void testRemoveStudentNotFound() {
 
@@ -87,7 +89,7 @@ public class ClassGroupTest {
         Student student = new Student(
                 1,
                 "Alice",
-                LocalDate.of(2025, 1, 1));
+                LocalDate.of(2025, Month.JANUARY, 1));
 
         group.addStudent(student);
 
@@ -95,7 +97,7 @@ public class ClassGroupTest {
 
         assertEquals(1, group.getSize());
     }
-    
+
     @Test
     void testGetTheOldestStudent() {
 
@@ -104,17 +106,17 @@ public class ClassGroupTest {
         Student oldest = new Student(
                 1,
                 "Alice",
-                LocalDate.of(2000, 1, 1));
+                LocalDate.of(2000, Month.JANUARY, 1));
 
         Student younger = new Student(
                 2,
                 "Bob",
-                LocalDate.of(2005, 1, 1));
+                LocalDate.of(2005, Month.JUNE, 1));
 
         Student youngest = new Student(
                 3,
                 "Charlie",
-                LocalDate.of(2010, 1, 1));
+                LocalDate.of(2010, Month.DECEMBER, 1));
 
         group.addStudent(youngest);
         group.addStudent(oldest);
@@ -122,7 +124,7 @@ public class ClassGroupTest {
 
         assertSame(oldest, group.getTheOldestStudent());
     }
-    
+
     @Test
     void testGetTheOldestStudentWhenEmpty() {
 

@@ -57,12 +57,17 @@ public class Student {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Student student = (Student) o;
-        return id == student.id &&
-                Objects.equals(name, student.name) &&
-                Objects.equals(birthday, student.birthday);
+        return id == student.id
+                && Objects.equals(name, student.name)
+                && Objects.equals(birthday, student.birthday);
     }
 
     @Override
@@ -70,29 +75,21 @@ public class Student {
         return Objects.hash(id, name, birthday);
     }
 
-    public static Comparator<Student> compareByName = new Comparator<Student>() {
-        @Override
-        public int compare(Student s1, Student s2) {
-            return s1.getName().compareToIgnoreCase(s2.getName());
-        }
-    };
+    public static Comparator<Student> compareByName =
+            (s1, s2) -> s1.getName().compareToIgnoreCase(s2.getName());
 
-    public static Comparator<Student> compareByBirthday = new Comparator<Student>() {
-        @Override
-        public int compare(Student s1, Student s2) {
-            return s1.getBirthday().compareTo(s2.getBirthday());
-        }
-    };
+    public static Comparator<Student> compareByBirthday =
+            (s1, s2) -> s1.getBirthday().compareTo(s2.getBirthday());
 
     @Override
     public String toString() {
-        return "Student{id = " + id +
-                ", name = '" + name + '\'' +
-                ", birthday = " + birthday +
-                ", friend = " + (friend != null ? friend.name : "no best friend") +
-                '}';
+        return "Student{id = " + id
+                + ", name = '" + name + '\''
+                + ", birthday = " + birthday
+                + ", friend = " + (friend != null ? friend.name : "no best friend")
+                + '}';
     }
-    
+
     public void assignRandomUsername(Random random) {
         int minLength = 5;
         int maxLength = 10;
