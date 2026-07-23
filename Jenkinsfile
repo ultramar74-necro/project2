@@ -8,33 +8,32 @@ pipeline {
 
     stages {
 
-        stage('Clean') {
+        stage('clean') {
             steps {
-                echo 'Cleaning project...'
+                echo 'Start Clean'
                 bat 'mvn clean'
             }
         }
 
-        stage('Test') {
+        stage('test') {
             steps {
-                echo 'Running JUnit tests...'
+                echo 'Start Test'
                 bat 'mvn test'
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    bat 'mvn sonar:sonar -Dsonar.projectKey=project2'
+                }
+            }
+        }
     }
 
     post {
         always {
             junit '**/target/surefire-reports/*.xml'
-        }
-
-        success {
-            echo 'Build completed successfully.'
-        }
-
-        failure {
-            echo 'Build failed.'
         }
     }
 }
