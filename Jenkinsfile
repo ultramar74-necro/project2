@@ -8,22 +8,23 @@ pipeline {
 
     stages {
 
-        stage('clean') {
+        stage('Clean') {
             steps {
-                echo 'Start Clean'
+                echo 'Cleaning Maven project...'
                 bat 'mvn clean'
             }
         }
 
-        stage('test') {
+        stage('Build & Unit Test') {
             steps {
-                echo 'Start Test'
-                bat 'mvn test'
+                echo 'Compiling project, running JUnit tests and generating JaCoCo coverage...'
+                bat 'mvn verify'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
+                echo 'Running SonarQube static code analysis...'
                 withSonarQubeEnv('SonarQube') {
                     bat 'mvn sonar:sonar -Dsonar.projectKey=project2'
                 }
@@ -33,7 +34,22 @@ pipeline {
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
+            echo 'Publishing JUnit test results...'
+
+            junit allowEmptyResults: true,
+                  testResults: '**/target/surefire-reports/*.xml'
+
+            archiveArtifacts artifacts: 'target/site/jacoco/**/*',
+                             fingerprint: true,
+                             allowEmptyArchive: true
+        }
+
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+
+        failure {
+            echo 'Pipeline failed. Please review the console output.'
         }
     }
 }
