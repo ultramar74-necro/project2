@@ -141,4 +141,53 @@ class StudentTest {
 		verify(random).nextInt(6);
 		verify(random, times(5)).nextInt(63);
 	}
+
+	@Test
+	void testEqualsWithNull() {
+
+		Student student = new Student(1, "Alice", LocalDate.of(2025, Month.JANUARY, 1));
+
+		assertNotEquals(null, student);
+	}
+
+	@Test
+	void testEqualsWithDifferentObjectType() {
+
+		Student student = new Student(1, "Alice", LocalDate.of(2025, Month.JANUARY, 1));
+
+		assertNotEquals("Alice", student);
+	}
+
+	@Test
+	void testCompareByNameSameName() {
+
+		Student s1 = new Student(1, "Alice", LocalDate.of(2025, Month.JANUARY, 1));
+
+		Student s2 = new Student(2, "Alice", LocalDate.of(2024, Month.JANUARY, 1));
+
+		assertEquals(0, Student.compareByName.compare(s1, s2));
+	}
+
+	@Test
+	void testCompareByBirthdaySameBirthday() {
+
+		Student s1 = new Student(1, "Alice", LocalDate.of(2025, Month.JANUARY, 1));
+
+		Student s2 = new Student(2, "Bob", LocalDate.of(2025, Month.JANUARY, 1));
+
+		assertEquals(0, Student.compareByBirthday.compare(s1, s2));
+	}
+
+	@Test
+	void testToStringWithFriend() {
+
+		Student friend = new Student(2, "Bob", LocalDate.of(2024, Month.JANUARY, 1));
+
+		Student student = new Student(1, "Alice", LocalDate.of(2025, Month.JANUARY, 1), friend);
+
+		String text = student.toString();
+
+		assertTrue(text.contains("Bob"));
+	}
+
 }
